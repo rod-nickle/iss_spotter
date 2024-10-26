@@ -1,44 +1,15 @@
-const {
-  fetchMyIP,
-  fetchCoordsByIP,
-  fetchISSFlyOverTimes,
-} = require('./iss');
+const {nextISSTimesForMyLocation} = require('./iss');
 
-/**
- * Makes a single API request to retrieve the user's IP address.
- * Input:
- *   - A callback (to pass back an error or the IP string)
- * Returns (via Callback):
- *   - An error, if any (nullable)
- *   - The IP address as a string (null if error). Example: "162.245.144.188"
- */
-
-
-fetchMyIP((error, ip) => {
+nextISSTimesForMyLocation((error, flyoverTimes) => {
   if (error) {
-    console.log("It didn't work!" , error);
-    return;
+    return console.log("It didn't work!", error);
   }
-
-  console.log('It worked! Returned IP:' , ip);
-
-  fetchCoordsByIP(ip, (error, coords) => {
-    if (error) {
-      console.log("It didn't work!" , error);
-      return;
-    }
-  
-    console.log('It worked! Returned Coordinates:' , coords);
-
-    fetchISSFlyOverTimes(coords, (error, flyoverTimes) => {
-      if (error) {
-        console.log("It didn't work!" , error);
-        return;
-      }
-    
-      console.log('It worked! Returned Flyover Times:' , flyoverTimes);
-    });
+  // success, print out the deets!
+  flyoverTimes.forEach(element => {
+    console.log(`Next pass at ${Date(element.risetime)} for ${element.duration} seconds!`);
   });
 });
+
+
 
 
