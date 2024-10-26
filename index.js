@@ -1,4 +1,7 @@
-const { fetchMyIP } = require('./iss');
+const {
+  fetchMyIP,
+  fetchCoordsByIP,
+} = require('./iss');
 
 /**
  * Makes a single API request to retrieve the user's IP address.
@@ -9,6 +12,7 @@ const { fetchMyIP } = require('./iss');
  *   - The IP address as a string (null if error). Example: "162.245.144.188"
  */
 
+
 fetchMyIP((error, ip) => {
   if (error) {
     console.log("It didn't work!" , error);
@@ -16,8 +20,15 @@ fetchMyIP((error, ip) => {
   }
 
   console.log('It worked! Returned IP:' , ip);
+
+  fetchCoordsByIP(ip, (error, coords) => {
+    if (error) {
+      console.log("It didn't work!" , error);
+      return;
+    }
+  
+    console.log('It worked! Returned Coordinates:' , coords);
+  });
 });
 
-module.exports = { fetchMyIP };
 
-//fetchMyIP();
